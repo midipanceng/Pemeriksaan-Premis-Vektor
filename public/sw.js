@@ -1,8 +1,8 @@
-const CACHE_NAME = 'vektor-pkd-v2'; // Changed version to force update
+const CACHE_NAME = 'vektor-pkd-v3';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest'
+  './',
+  './index.html',
+  './manifest.webmanifest'
 ];
 
 self.addEventListener('install', (event) => {
