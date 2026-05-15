@@ -102,7 +102,7 @@ export default function App() {
     setShowDeleteConfirm(null);
   };
 
-  const exportCSV = () => {
+  const generateCSVBlob = () => {
     const headers = [
       'Bil', 'Nama Pegawai / Pasukan', 'Nama Jalan / Blok', 'Premis', 'Periksa', 'Tutup', 'Kosong', 'Jumlah', 
       'Positive (+ve)', '(A.I)', 'Bekas', 'Bil. Diperiksa', 
@@ -126,7 +126,11 @@ export default function App() {
     ]);
 
     const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    return new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  };
+
+  const exportCSV = () => {
+    const blob = generateCSVBlob();
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `data_vektor_${format(Date.now(), 'yyyyMMdd_HHmm')}.csv`;
@@ -142,21 +146,29 @@ export default function App() {
   };
 
   const shareData = async () => {
-    const summary = `Ringkasan Data Vektor PKD Gombak (${format(Date.now(), 'dd/MM/yyyy')}):
-Total Entri: ${stats.totalEntries}
-Total Premis: ${stats.totalPremis}
-Total Positive: ${stats.totalPos}
+    const summary = generateSummary(entries);
+    const blob = generateCSVBlob();
+    const fileName = `laporan_vektor_${format(Date.now(), 'yyyyMMdd')}.csv`;
+    const file = new File([blob], fileName, { type: 'text/csv' });
 
-Data lengkap dilampirkan dalam fail eksport.`;
-
-    if (navigator.share) {
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'Laporan Vektor PKD Gombak',
+          text: summary,
+        });
+      } catch (err) {
+        console.error('Sharing file failed', err);
+      }
+    } else if (navigator.share) {
       try {
         await navigator.share({
           title: 'Data Vektor PKD Gombak',
           text: summary,
         });
       } catch (err) {
-        console.error('Sharing failed', err);
+        console.error('Sharing text failed', err);
       }
     } else {
       const emailBody = encodeURIComponent(summary);
@@ -285,7 +297,7 @@ Data lengkap dilampirkan dalam fail eksport.`;
                 onClick={exportCSV}
                 className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 rounded-xl py-2.5 text-xs font-semibold hover:bg-slate-50 shadow-sm transition-all active:scale-95"
               >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-600" /> CSV
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600" /> Excel (CSV)
               </button>
               <button 
                 onClick={exportJSON}
