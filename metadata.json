@@ -1,0 +1,6 @@
+{
+  "name": "Unit Vektor PKD Gombak",
+  "description": "Mobile web app untuk pengumpulan data lapangan Unit Vektor PKD Gombak dengan sokongan PWA dan eksport data.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
