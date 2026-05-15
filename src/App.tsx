@@ -201,10 +201,20 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-24">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-24 relative overflow-x-hidden">
+      {/* Background Decor */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.05] grayscale mix-blend-multiply">
+        <img 
+          src="https://images.unsplash.com/photo-1576091160550-217359f4ecf8?auto=format&fit=crop&q=80&w=2000" 
+          className="w-full h-full object-cover" 
+          alt="" 
+        />
+      </div>
+      <div className="fixed inset-0 z-0 pointer-events-none bg-gradient-to-b from-white/40 via-transparent to-transparent" />
+
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
-        <div className="max-w-md mx-auto flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/50 px-4 py-3 shadow-sm transition-all">
+        <div className="max-w-md mx-auto flex items-center justify-between relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center text-white">
               <ClipboardList className="w-6 h-6" />
