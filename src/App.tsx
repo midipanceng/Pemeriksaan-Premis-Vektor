@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, type ReactNode } from 'react';
 import { 
   Plus, 
   FileJson, 
@@ -45,8 +45,16 @@ export default function App() {
     const savedPhone = localStorage.getItem('vektor_office_phone');
     if (saved) {
       try {
-        setEntries(JSON.parse(saved));
-      } catch (e) { console.error(e); }
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setEntries(parsed);
+        } else {
+          setEntries([]);
+        }
+      } catch (e) { 
+        console.error('Failed to parse entries', e);
+        setEntries([]);
+      }
     }
     if (savedPhone) setOfficeNumber(savedPhone);
   }, []);
@@ -512,7 +520,7 @@ Data lengkap dilampirkan dalam fail eksport.`;
   );
 }
 
-function StatCard({ label, value, icon, color = "bg-sky-50 text-sky-700" }: { label: string, value: number, icon: React.ReactNode, color?: string }) {
+function StatCard({ label, value, icon, color = "bg-sky-50 text-sky-700" }: { label: string, value: number, icon: ReactNode, color?: string }) {
   return (
     <div className={cn("rounded-2xl p-3 flex flex-col items-center justify-center space-y-1 shadow-sm", color)}>
       <div className="opacity-70">{icon}</div>
