@@ -1,8 +1,9 @@
-const CACHE_NAME = 'vektor-pkd-v3';
+const CACHE_NAME = 'vektor-pkd-v4';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  'https://cdn-icons-png.flaticon.com/512/2855/2855546.png'
 ];
 
 self.addEventListener('install', (event) => {
